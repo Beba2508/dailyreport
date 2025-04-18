@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Report</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', sans-serif;
+      background-color: #fff8f0;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    h1 {
+      font-size: 3em;
+      margin-top: 20px;
+      color: #333;
+    }
+    .main-img {
+      max-width: 300px;
+      margin: 20px auto;
+      border-radius: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    .btn {
+      display: inline-block;
+      margin: 20px auto;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: #72aee6;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn:hover {
+      background-color: #5d94cc;
+    }
+    .result {
+      margin-top: 30px;
+      font-size: 1.6em;
+    }
+    .link-area {
+      margin-top: 20px;
+      font-size: 1.2em;
+    }
+    .emoji {
+      font-size: 1.4em;
+      animation: float 3s ease-in-out infinite;
+      display: inline-block;
+      margin: 0 5px;
+    }
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    #quiz, #catch-game {
+      margin-top: 40px;
+    }
+    .quiz-question {
+      font-size: 1.2em;
+      margin-bottom: 10px;
+    }
+    .quiz-options button {
+      margin: 5px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #fce4ec;
+      cursor: pointer;
+    }
+    .wg-runner {
+      position: absolute;
+      top: 70%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: pink;
+      padding: 10px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      animation: moveAround 8s infinite linear;
+    }
+    @keyframes moveAround {
+      0% { top: 60%; left: 20%; }
+      25% { top: 30%; left: 80%; }
+      50% { top: 50%; left: 10%; }
+      75% { top: 70%; left: 90%; }
+      100% { top: 60%; left: 20%; }
+    }
+  </style>
+</head>
+<body>
+  <h1>DAILY REPORT</h1>
+  <img src="<img src="img/beba-seka.png" alt="Beba i Seka" class="main-img">" alt="Beba i Seka" class="main-img">
+  <button class="btn" onclick="generateReport()">KLIKNI OVDJE SEKO!</button>
+
+  <div class="result" id="result"></div>
+  <div class="link-area" id="link-area"></div>
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <!-- QUIZ -->
+  <div id="quiz">
+    <p class="quiz-question">🧐 Gdje je WG4?</p>
+    <div class="quiz-options">
+      <button onclick="alert('Točno! A možda i nije.')">a) u Lidlu 🛒</button>
+      <button onclick="alert('Točno! A možda i nije.')">b) ispred zgrade bez signala 📵</button>
+      <button onclick="alert('Točno! A možda i nije.')">c) nije ni krenuo 😴</button>
+      <button onclick="alert('Točno! A možda i nije.')">d) u srcu Seke ❤️</button>
+    </div>
+  </div>
+
+  <!-- MINI GAME -->
+  <div id="catch-game">
+    <p>🎮 Mini igra: Uhvatite WG-a!</p>
+    <div class="wg-runner" onclick="alert('Next time, maybe 😎')">WG4 🏃‍♂️</div>
+  </div>
+
+  <script>
+    function generateReport() {
+      document.getElementById("result").innerHTML = `
+        <strong>WG4 NO SHOW</strong><br>
+        <strong>WG20 vjerojatno nije ušao</strong><br>
+        <strong style="color:green">... a svi ostali su ušli. ✅</strong>
+      `;
+      document.getElementById("link-area").innerHTML = `
+        <p>
+          <a href="https://open.spotify.com/track/5ifUEpN1xa1axzBJeu2iAs?si=cea4f0de224b48d9" 
+             target="_blank" style="text-decoration: none; color: #0056b3; font-weight: bold;">
+            🎧 U to ime, ko bi reko čuda da se dese 🎶
+          </a>
+        </p>
+        <p>
+          🐣🥚🐇 <span class="emoji">🥚</span><span class="emoji">🐇</span><span class="emoji">🐣</span>
+        </p>
+      `;
+      startConfetti();
+    }
+
+    function startConfetti() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const pieces = [];
+
+      for (let i = 0; i < 150; i++) {
+        pieces.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 6 + 4,
+          c: `hsl(${Math.random() * 360}, 70%, 60%)`,
+          s: Math.random() * 3 + 1,
+          d: Math.random() * Math.PI * 2
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.c;
+          ctx.fill();
+        });
+        update();
+        requestAnimationFrame(draw);
+      }
+
+      function update() {
+        pieces.forEach(p => {
+          p.y += p.s;
+          if (p.y > canvas.height) {
+            p.y = 0;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+      }
+
+      draw();
+    }
+  </script>
+</body>
+</html>
